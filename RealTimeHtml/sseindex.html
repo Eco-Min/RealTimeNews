@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="userId" disabled="false">
+    <ol id="list">
+
+    </ol>
+    <script>
+        $(document).ready(function () {
+
+            let userId = Math.floor((Math.random() * 1000) + 1);
+            document.getElementById("userId").value = userId;
+            let urlENdPoint = 'http://localhost:8080/subscribe?userId=' + userId;
+            let eventSource = new EventSource(urlENdPoint);
+
+            eventSource.addEventListener("latestNews", function (event) {
+                console.log("EVENT : " + event);
+                console.log("EVENT : " + event.data);
+                let artilceSource = JSON.parse(event.data);
+                console.log("artilceSource : "+ artilceSource)
+
+                $("#list").append("<li>" + artilceSource.Title +" --> "+ artilceSource.Text + "</li>");
+            });
+
+        })
+    </script>
+
+</body>
+
+</html>
